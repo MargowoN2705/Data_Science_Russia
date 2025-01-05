@@ -1,5 +1,11 @@
 from Analysys_Russia.Code.Bartek.Main import consumptuon_data, plt, pd, sns, np
-from scipy.stats import linregress
+
+def MNK(x, y):
+    x_2 = x ** 2
+    A = np.array([[x_2.sum(), x.sum()], [x.sum(), len(x)]])
+    B = np.array([(x * y).sum(), y.sum()])
+    find = np.linalg.inv(A).dot(B)
+    return find
 
 temp_data = consumptuon_data.copy()
 temp_data = temp_data[temp_data['Year'] == 2022]
@@ -27,12 +33,13 @@ x_numeric = np.arange(len(temp_data))
 y_1_values = temp_data['Vodka'].values
 y_2_values = temp_data['Total alcohol consumption (in liters of pure alcohol per capita)'].values
 
-slope_1, intercept_1, _, _, _ = linregress(x_numeric, y_1_values)
-regression_line_1 = slope_1 * x_numeric + intercept_1
-regression_line_1_plot, = ax1.plot(temp_data['Region'], regression_line_1, 'b--', label='Vodka Regression')
+regression_vodka = MNK(x_numeric, y_1_values)
+regression_total_consumption = MNK(x_numeric, y_2_values)
 
-slope_2, intercept_2, _, _, _ = linregress(x_numeric, y_2_values)
-regression_line_2 = slope_2 * x_numeric + intercept_2
+regression_line_1 = regression_vodka[0] * x_numeric + regression_vodka[1]
+regression_line_2 = regression_total_consumption[0] * x_numeric + regression_total_consumption[1]
+
+regression_line_1_plot, = ax1.plot(temp_data['Region'], regression_line_1, 'b--', label='Vodka Regression')
 regression_line_2_plot, = ax2.plot(temp_data['Region'], regression_line_2, 'r--', label='Total Consumption Regression')
 
 plt.legend(
@@ -48,7 +55,6 @@ plt.legend(
 
 fig.tight_layout()
 plt.show()
-
 
 sns.set()
 
@@ -67,15 +73,12 @@ ax2.tick_params(axis='y', labelcolor='red')
 ax1.set_xticks([])
 ax1.set_xticklabels([])
 
-x_numeric = np.arange(len(temp_data))
 y_1_values = temp_data['Beer'].values
-y_2_values = temp_data['Total alcohol consumption (in liters of pure alcohol per capita)'].values
 
-slope_1, intercept_1, _, _, _ = linregress(x_numeric, y_1_values)
-regression_line_1 = slope_1 * x_numeric + intercept_1
+regression_beer = MNK(x_numeric, y_1_values)
 
-slope_2, intercept_2, _, _, _ = linregress(x_numeric, y_2_values)
-regression_line_2 = slope_2 * x_numeric + intercept_2
+regression_line_1 = regression_beer[0] * x_numeric + regression_beer[1]
+regression_line_2 = regression_total_consumption[0] * x_numeric + regression_total_consumption[1]
 
 regression_line_1_plot, = ax1.plot(temp_data['Region'], regression_line_1, 'g--', label='Beer Regression')
 regression_line_2_plot, = ax2.plot(temp_data['Region'], regression_line_2, 'r--', label='Total Consumption Regression')
