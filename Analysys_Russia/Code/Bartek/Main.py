@@ -5,4 +5,4 @@ import seaborn as sns
 
 
 russian_data = pd.read_csv("../../Russia_22_data_updated.csv")
-
+consumptuon_data = pd.read_csv('../../Alkohol_Consumption.csv')
