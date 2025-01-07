@@ -8,10 +8,10 @@ def MNK(x, y):
     return find
 
 temp_data = russian_data.copy()
-temp_data = temp_data.dropna()
+
 print(temp_data.columns)
 temp_data = temp_data.sort_values(by='Salary')
-temp_data = temp_data[['Salary', 'GRDP_per_capita' ,'Region']]
+temp_data = temp_data[['Salary', 'GRDP_per_capita' ,'Region']].dropna()
 
 print(temp_data.describe())
 

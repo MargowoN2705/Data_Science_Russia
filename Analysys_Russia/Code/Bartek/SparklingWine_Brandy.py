@@ -1,5 +1,5 @@
 from matplotlib.pyplot import xticks
-from Analysys_Russia.Code.Bartek.Main import consumptuon_data, pd, np, sns, plt
+from Analysys_Russia.Code.Bartek.Main import consumptuon_data,russian_data, pd, np, sns, plt
 
 def MNK(x, y):
     x_2 = x ** 2
